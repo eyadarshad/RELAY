@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-inter: 'Inter', sans-serif;
+  --font-space: 'Space Grotesk', sans-serif;
+  --font-jetbrains: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #000000;
+  color: #F4F4F4;
+  font-family: var(--font-inter);
+  overflow-x: hidden;
+  selection-background-color: #CCFF00;
+  selection-color: #000000;
+}
+
+::selection {
+  background: #CCFF00;
+  color: #000000;
+}
+
+/* Custom Tactical Brutalist Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #000000;
+  border-left: 1px solid #1C1C1C;
+}
+::-webkit-scrollbar-thumb {
+  background: #2A2A2A;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #CCFF00;
+}
+
+/* CRT Scanline Overlay */
+.scanlines {
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.03),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.03)
+  );
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+}
+
+/* Grid Matrix Background */
+.grid-bg {
+  background-image: 
+    linear-gradient(to right, #111111 1px, transparent 1px),
+    linear-gradient(to bottom, #111111 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Acid Glow Utility */
+.acid-glow {
+  box-shadow: 0 0 24px -4px rgba(204, 255, 0, 0.3);
+}
+
+.acid-glow-sm {
+  box-shadow: 0 0 12px -2px rgba(204, 255, 0, 0.25);
+}
+
+.cyan-glow {
+  box-shadow: 0 0 20px -4px rgba(0, 229, 255, 0.35);
+}
+
+.green-glow {
+  box-shadow: 0 0 20px -4px rgba(0, 255, 136, 0.35);
+}
+
+.amber-glow {
+  box-shadow: 0 0 20px -4px rgba(255, 184, 0, 0.35);
+}
+
+/* Animated Border Trace */
+@keyframes borderTrace {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.trace-border {
+  background: linear-gradient(90deg, #1C1C1C, #CCFF00, #1C1C1C);
+  background-size: 200% 200%;
+  animation: borderTrace 4s ease infinite;
+}

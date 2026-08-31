@@ -1,0 +1,40 @@
+# Render Blueprint Specification for RELAY Autonomous Operations Agent
+# Deploys both FastAPI Backend and Next.js Frontend
+services:
+  # 1. FastAPI Backend Web Service
+  - type: web
+    name: relay-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "pip install -r backend/requirements.txt"
+    startCommand: "python -m uvicorn backend.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.0
+      - key: CALLE_API_KEY
+        sync: false
+      - key: FORCE_SIMULATION
+        value: "false"
+      - key: DATABASE_URL
+        value: "sqlite+aiosqlite:///./relay.db"
+      - key: APPROVAL_HIGH_THRESHOLD
+        value: "5000.0"
+
+  # 2. Next.js Frontend Web Service
+  - type: web
+    name: relay-frontend
+    env: node
+    region: oregon
+    plan: free
+    rootDir: frontend
+    buildCommand: "npm install && npm run build"
+    startCommand: "npm run start"
+    envVars:
+      - key: NODE_VERSION
+        value: 20.x
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: relay-backend
+          property: host

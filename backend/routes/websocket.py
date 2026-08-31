@@ -1,3 +1,4 @@
+import json
 import logging
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from sqlalchemy import select
@@ -18,7 +19,7 @@ router = APIRouter(tags=["WebSocket"])
 async def mission_websocket(websocket: WebSocket, mission_id: str):
     await event_bus.connect(mission_id, websocket)
     
-    # Send initial state snapshot upon connection
+    # Send initial state snapshot upon connection with safe JSON serialization
     try:
         async with async_session_factory() as session:
             stmt = (
@@ -34,11 +35,16 @@ async def mission_websocket(websocket: WebSocket, mission_id: str):
             m = res.scalar_one_or_none()
             if m:
                 dto = _to_dto(m)
+                try:
+                    dto_dict = json.loads(dto.model_dump_json())
+                except AttributeError:
+                    dto_dict = json.loads(dto.json())
+                
                 await websocket.send_json({
                     "event_type": "STATE_SNAPSHOT",
                     "title": "State Sync",
                     "message": f"Connected to mission {mission_id}",
-                    "data": dto.dict(),
+                    "data": dto_dict,
                     "timestamp": dto.created_at.isoformat() if dto.created_at else None
                 })
     except Exception as e:

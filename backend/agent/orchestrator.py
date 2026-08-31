@@ -580,6 +580,7 @@ class MissionOrchestrator:
         await self._set_status(session, mission, MissionStatus.CALLING, "Dialing emergency carrier dispatchers sequentially...")
 
         secured_offer: Optional[DBOffer] = None
+        collected_offers: List[DBOffer] = []
         calls_count = 0
 
         for idx, carrier in enumerate(dispatchers, start=1):
@@ -915,6 +916,7 @@ class MissionOrchestrator:
         await self._set_status(session, mission, MissionStatus.CALLING, "Contacting waitlist clients in priority order...")
 
         booked_offer: Optional[DBOffer] = None
+        collected_offers: List[DBOffer] = []
         calls_count = 0
 
         for idx, client in enumerate(clients, start=1):

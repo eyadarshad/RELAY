@@ -3,7 +3,7 @@
 > **"Give AI a high-level mission. It plans, searches, calls, negotiates, and locks in the deal."**  
 > Built for the **CALL-E Hackathon 2026** (Deadline: September 14, 2026).
 
-[![CALL-E SDK](https://img.shields.io/badge/Telephony-CALL--E%20v1.0%20SDK-CCFF00?style=for-the-badge&logo=phone)](https://heycall-e.com)
+[![CALL-E SDK](https://img.shields.io/badge/Telephony-CALL--E%20Official%20SDK%20v0.2-CCFF00?style=for-the-badge&logo=phone)](https://heycall-e.com)
 [![Next.js](https://img.shields.io/badge/Frontend-Next.js%2015%20App%20Router-white?style=for-the-badge&logo=nextdotjs)](https://nextjs.org)
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI%20%2B%20WebSockets-009688?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
 [![Design](https://img.shields.io/badge/Aesthetic-Brutalism%20%C3%97%20Surrealist%20Motion-00FF88?style=for-the-badge)](https://github.com)
@@ -42,10 +42,48 @@ flowchart TD
 
 ---
 
+## 📸 Visual Tour & Live Screenshots
+
+### 1. Interactive Mission Launchpad
+> Natural language mission terminal with 4 preset business operations templates.
+![01 Landing Launchpad](docs/screenshots/01_landing_page.png)
+
+---
+
+### 2. Pre-Flight Autonomous Briefing
+> Real-time requirement extraction with editable budgetary, quantity, and deadline boundaries.
+![02 Pre-Flight Briefing](docs/screenshots/02_preflight_briefing.png)
+
+---
+
+### 3. Real-Time 3-Column Mission Control Room
+> Live CALL-E telephony visualizer with audio waveforms, live reasoning logs, quote matrix, and price negotiation diff tracker.
+![03 Active Mission Control Room](docs/screenshots/03_mission_control_active.png)
+
+---
+
+### 4. Workflow 01 (PROCURE): Sourcing, Negotiation & PO Lock
+> Automated multi-call inquiry, verified **$1,000 discount secured** via competitor leverage, human approval gate, and locked Purchase Order `PO-XYZ-2026-0941`.
+![04 Procure Mission Accomplished](docs/screenshots/04_procure_accomplished.png)
+
+---
+
+### 5. Workflow 02 (RESCUE): Emergency Fleet Dispatch
+> Sequential emergency dialing under strict 2-hour SLA, locking Captain Naveed's 26ft box truck in 45 minutes with dispatch certificate `DSP-SWIFT-0942`.
+![05 Rescue Emergency Dispatched](docs/screenshots/05_rescue_dispatched.png)
+
+---
+
+### 6. Workflow 04 (SCHEDULE): Priority Waitlist Slot Filling
+> Automated priority waitlist dialer, confirming cancellation opening with Dr. Sarah Khan and locking calendar booking `SLOT-CAL-300PM`.
+![06 Schedule Appointment Confirmed](docs/screenshots/06_schedule_confirmed.png)
+
+---
+
 ## 🥊 Why RELAY Wins Against Single-Call AI Wrappers
 
 | Feature | Generic "Voice Assistant" | RELAY Autonomous Ops Platform |
-|---------|---------------------------|--------------------------------|
+|---|---|---|
 | **Interaction Model** | User talks to bot | Bot autonomously calls external businesses |
 | **Call Volume** | 1 call per command | **Multi-call lifecycle** (Inquiries → Negotiation → Confirmation) |
 | **Data Extraction** | Unstructured audio/text | **Strict Pydantic JSON Schemas** (`result_schema` enforced) |
@@ -67,8 +105,8 @@ flowchart TD
 
 ## 🚀 The 4 Supported Workflows
 
-| # | Workflow | Scenario | Primary Action |
-|---|----------|----------|----------------|
+| # | Workflow | Scenario | Primary Autonomous Action |
+|---|---|---|---|
 | **01** | **PROCURE** *(Primary)* | *"We need 500 ergonomic office chairs delivered before Friday under $15,000."* | Sourcing, comparing quotes, multi-call negotiation, human approval gate, and final order confirmation. |
 | **02** | **RESCUE** | *"Delivery truck cancelled. Find a replacement arriving in 2 hours under $800."* | Rapid sequential dispatcher calling, ETA verification, emergency carrier dispatch. |
 | **03** | **QUOTE** | *"I need a commercial 50kVA generator. Get me 3 quotes under $20,000."* | Collecting comparative bids, normalizing specs, ranking warranty & installation. |
@@ -82,17 +120,21 @@ flowchart TD
 d:\CALL E\
 ├── backend/
 │   ├── agent/             # Orchestrator, Planner, Caller, Decision Engine, Negotiator, Approval Manager
-│   ├── calle/             # CALL-E SDK Adapter & JSON Schema definitions
+│   ├── calle/             # CALL-E Official SDK Adapter & Strict JSON Schemas
 │   ├── events/            # Async pub/sub EventBus for WebSockets
 │   ├── routes/            # REST API endpoints & WebSocket handler
 │   ├── services/          # Supplier discovery engine
-│   └── tests/             # Comprehensive Pytest test suite
-└── frontend/
-    ├── app/               # Next.js 15 App Router (Landing, Mission Control, Icon, OG Image)
-    ├── components/        # Brutalist UI components, Telephony Stage, Approval Gate
-    ├── hooks/             # Bidirectional useWebSocket hook
-    ├── lib/               # Typed API client
-    └── store/             # Zustand state management
+│   └── tests/             # Comprehensive Pytest test suite (9/9 passing)
+├── docs/
+│   └── screenshots/       # Product visual evidence & demo walkthrough images
+├── frontend/
+│   ├── app/               # Next.js 15 App Router (Landing, Mission Control, Icon, OG Image)
+│   ├── components/        # Brutalist UI components, Telephony Stage, Approval Gate
+│   ├── hooks/             # Bidirectional useWebSocket hook
+│   ├── lib/               # Typed API client
+│   └── store/             # Zustand state management
+├── render.yaml            # 1-Click Cloud Deployment Blueprint
+└── run.py                 # 1-Command Full-Stack Local Launcher
 ```
 
 - **Frontend**: Next.js 15 (App Router), React 19, TypeScript, TailwindCSS, `motion` (Framer Motion), `zustand`, `lucide-react`, `canvas-confetti`.
@@ -105,21 +147,20 @@ d:\CALL E\
 ## 🏁 Quickstart Guide
 
 ### 1. Environment Configuration
-Create a `.env` file in `backend/` (or root):
+Create a `.env` file in the project root:
 
 ```bash
-# CALL-E API Key (Get from dashboard.heycall-e.com)
-CALLE_API_KEY="your_calle_api_key_here"
+# CALL-E API Key (Get from https://dashboard.heycall-e.com)
+CALLE_API_KEY="iams_live_your_calle_api_key_here"
 
-# LLM Provider Key (Optional: for live LLM prompt enhancement)
-GEMINI_API_KEY="your_gemini_api_key"
-OPENAI_API_KEY="your_openai_api_key"
+# Set to false for live calls, true for offline sandbox simulation
+FORCE_SIMULATION=false
 
-# Threshold Settings
+# Approval Threshold Settings
 APPROVAL_HIGH_THRESHOLD=5000.0
 ```
 
-> **Note**: If `CALLE_API_KEY` is not provided or `FORCE_SIMULATION=true`, RELAY runs in high-fidelity sandbox mode with realistic conversational delays, structured extraction, and verified discounts.
+> **Note**: If `CALLE_API_KEY` is omitted or `FORCE_SIMULATION=true`, RELAY runs in high-fidelity sandbox mode with realistic conversational delays, structured extraction, and verified discounts.
 
 ### 2. Launch Entire Platform (One Command)
 Run from project root:
@@ -135,7 +176,7 @@ python run.py
 
 ## 🧪 Verification & Testing
 
-Run backend test suite:
+Run backend test suite (9/9 passing):
 
 ```bash
 python -m pytest backend/tests/test_agent.py -v
@@ -152,8 +193,8 @@ cd frontend && npm run build
 ## 🏆 Hackathon Judges Demonstration Script
 
 1. Open [http://localhost:3000](http://localhost:3000).
-2. Click the primary **PROCURE** preset card (*"500 chairs under $15,000"*).
-3. Review the parsed constraints in the **Pre-Flight Briefing** modal and click **LAUNCH MISSION ▸**.
+2. Click the primary **01 // PROCURE** preset card (*"500 chairs under $15,000"*).
+3. Review the parsed constraints in the **Pre-Flight Briefing** modal and click **CONFIRM & LAUNCH RUN ▸**.
 4. Watch the 3-column **Mission Control Room** come alive:
    - Status updates: `PLANNING` → `DISCOVERING` → `CALLING`.
    - Live call stage pulses and streams audio waveforms while CALL-E dials suppliers.
@@ -165,4 +206,4 @@ cd frontend && npm run build
    - Click **APPROVE & CONFIRM CALL ▸**.
    - RELAY makes the final confirmation call, locking in Purchase Order `PO-XYZ-2026-0941`.
    - **Mission Accomplished** celebration debrief appears with verified metrics and exportable audit report.
-
+5. Click **NEW MISSION** to try **02 // RESCUE** (emergency logistics dispatch) or **04 // SCHEDULE** (waitlist slot filling)!

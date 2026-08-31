@@ -192,7 +192,7 @@ class CallRecordDTO(BaseModel):
     supplier_phone: str
     call_type: str
     status: CallStatus
-    duration_seconds: int
+    duration_seconds: Optional[int] = 0
     transcript_snippet: Optional[str] = None
     structured_result: Dict[str, Any] = {}
     started_at: datetime

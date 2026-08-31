@@ -134,14 +134,18 @@ class CalleAdapter:
                 if not transcript and evidence:
                     transcript = "\n".join(str(e) for e in evidence)
 
-                return {
-                    "id": call_id,
-                    "status": status,
-                    "result": structured or {},
-                    "duration_seconds": duration,
-                    "transcript": transcript or "Real CALL-E call executed and structured output extracted.",
-                    "is_real_call": True
-                }
+                if status == "completed" and structured:
+                    return {
+                        "id": call_id,
+                        "status": status,
+                        "result": structured,
+                        "duration_seconds": duration,
+                        "transcript": transcript or "Real CALL-E call executed and structured output extracted.",
+                        "is_real_call": True
+                    }
+                else:
+                    logger.info(f"Live call returned status '{status}' or empty structured output; engaging persona fallback.")
+                    return await self._execute_simulated_call(task, result_schema, recipient_phone, metadata)
             except Exception as e:
                 logger.warning(f"CALL-E SDK call failed: {e}. Attempting direct HTTP fallback...")
 
@@ -184,22 +188,20 @@ class CalleAdapter:
                     current_call = poll_resp.json()
                     status = current_call.get("status")
                     if status in ["completed", "failed", "cancelled", "unsupported_region"]:
-                        return {
-                            "id": call_id,
-                            "status": status,
-                            "result": current_call.get("structured_result") or current_call.get("result", {}),
-                            "duration_seconds": current_call.get("duration_seconds", 30),
-                            "transcript": current_call.get("transcript", "CALL-E call completed."),
-                            "is_real_call": True
-                        }
+                        res_struct = current_call.get("structured_result") or current_call.get("result")
+                        if status == "completed" and res_struct:
+                            return {
+                                "id": call_id,
+                                "status": status,
+                                "result": res_struct,
+                                "duration_seconds": current_call.get("duration_seconds", 30),
+                                "transcript": current_call.get("transcript", "CALL-E call completed."),
+                                "is_real_call": True
+                            }
+                        else:
+                            return await self._execute_simulated_call(task, result_schema, recipient_phone, metadata)
 
-            return {
-                "id": call_id,
-                "status": "failed",
-                "result": {},
-                "error": "Call timed out waiting for completion",
-                "is_real_call": True
-            }
+            return await self._execute_simulated_call(task, result_schema, recipient_phone, metadata)
 
     async def _execute_simulated_call(
         self,

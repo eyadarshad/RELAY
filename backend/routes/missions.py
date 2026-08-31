@@ -148,7 +148,7 @@ def _to_dto(m: DBMission) -> MissionDTO:
                 "supplier_phone": c.supplier_phone,
                 "call_type": c.call_type,
                 "status": c.status,
-                "duration_seconds": c.duration_seconds,
+                "duration_seconds": c.duration_seconds or 0,
                 "transcript_snippet": c.transcript_snippet,
                 "structured_result": c.structured_result or {},
                 "started_at": c.started_at

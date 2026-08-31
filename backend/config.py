@@ -8,11 +8,11 @@ class Settings(BaseSettings):
     API_PREFIX: str = "/api"
     
     # Server Binding
-    HOST: str = os.getenv("HOST", "0.0.0.0")
+    HOST: str = os.getenv("HOST", "0.0.0.0").strip()
     PORT: int = int(os.getenv("PORT", "8000"))
     
     # CORS & Deployment
-    FRONTEND_URL: Optional[str] = os.getenv("FRONTEND_URL", "http://localhost:3000")
+    FRONTEND_URL: Optional[str] = (os.getenv("FRONTEND_URL") or "http://localhost:3000").strip()
     CORS_ORIGINS: List[str] = [
         "http://localhost:3000",
         "http://127.0.0.1:3000",
@@ -22,15 +22,15 @@ class Settings(BaseSettings):
     ]
     
     # CALL-E API Configuration
-    CALLE_API_KEY: Optional[str] = os.getenv("CALLE_API_KEY", "")
-    CALLE_API_URL: str = os.getenv("CALLE_API_URL", "https://api.heycall-e.com/v1")
+    CALLE_API_KEY: Optional[str] = (os.getenv("CALLE_API_KEY") or "").strip()
+    CALLE_API_URL: str = (os.getenv("CALLE_API_URL") or "https://api.heycall-e.com/v1").strip()
     
     # LLM Settings (supports Gemini, OpenAI, or smart local rule-engine fallback)
-    GEMINI_API_KEY: Optional[str] = os.getenv("GEMINI_API_KEY", "")
-    OPENAI_API_KEY: Optional[str] = os.getenv("OPENAI_API_KEY", "")
+    GEMINI_API_KEY: Optional[str] = (os.getenv("GEMINI_API_KEY") or "").strip()
+    OPENAI_API_KEY: Optional[str] = (os.getenv("OPENAI_API_KEY") or "").strip()
     
     # Database
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///./relay.db")
+    DATABASE_URL: str = (os.getenv("DATABASE_URL") or "sqlite+aiosqlite:///./relay.db").strip()
     
     # Approval Thresholds (USD)
     APPROVAL_LOW_THRESHOLD: float = 500.0
@@ -42,7 +42,7 @@ class Settings(BaseSettings):
     
     # Simulation / Offline Testing Mode when CALL-E API key is not yet set or sandbox mode is toggled
     # Note: If CALLE_API_KEY is provided and FORCE_SIMULATION is False, REAL phone calls are dispatched.
-    FORCE_SIMULATION: bool = os.getenv("FORCE_SIMULATION", "false").lower() == "true"
+    FORCE_SIMULATION: bool = os.getenv("FORCE_SIMULATION", "false").lower().strip() == "true"
     
     class Config:
         env_file = ".env"

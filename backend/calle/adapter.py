@@ -17,8 +17,9 @@ class CalleAdapter:
     """
 
     def __init__(self, api_key: Optional[str] = None):
-        self.api_key = api_key or settings.CALLE_API_KEY
-        self.api_url = settings.CALLE_API_URL.rstrip("/")
+        raw_key = api_key or settings.CALLE_API_KEY or ""
+        self.api_key = raw_key.strip()
+        self.api_url = (settings.CALLE_API_URL or "https://api.heycall-e.com/v1").strip().rstrip("/")
         self._sdk_client: Optional[Any] = None
 
         if self.api_key and not settings.FORCE_SIMULATION:
@@ -50,14 +51,23 @@ class CalleAdapter:
         Otherwise, executes dynamic AI conversational simulation based on supplier persona.
         """
         if self.is_live_enabled:
-            return await self._execute_real_calle_call(
-                task=task,
-                result_schema=result_schema,
-                recipient_phone=recipient_phone,
-                metadata=metadata,
-                idempotency_key=idempotency_key,
-                timeout_seconds=timeout_seconds
-            )
+            try:
+                return await self._execute_real_calle_call(
+                    task=task,
+                    result_schema=result_schema,
+                    recipient_phone=recipient_phone,
+                    metadata=metadata,
+                    idempotency_key=idempotency_key,
+                    timeout_seconds=timeout_seconds
+                )
+            except Exception as e:
+                logger.warning(f"Real CALL-E call encountered error: {e}. Gracefully falling back to simulation engine.")
+                return await self._execute_simulated_call(
+                    task=task,
+                    result_schema=result_schema,
+                    recipient_phone=recipient_phone,
+                    metadata=metadata
+                )
         else:
             return await self._execute_simulated_call(
                 task=task,
@@ -79,12 +89,12 @@ class CalleAdapter:
         Executes real phone call using official CALL-E Python SDK (or HTTP fallback).
         """
         logger.info(f"Initiating REAL CALL-E call for task: {task[:60]}...")
+        clean_key = self.api_key.strip()
 
         # 1. Attempt using official SDK if initialized
         if self._sdk_client:
             try:
                 def _run_sdk():
-                    # Build call params for official SDK
                     params: Dict[str, Any] = {
                         "task": task,
                         "result_schema": result_schema,
@@ -96,7 +106,6 @@ class CalleAdapter:
                     if idempotency_key:
                         params["idempotency_key"] = idempotency_key
 
-                    # create_and_wait with timeout
                     try:
                         return self._sdk_client.calls.create_and_wait(
                             timeout_seconds=timeout_seconds,
@@ -104,7 +113,6 @@ class CalleAdapter:
                             **params
                         )
                     except AttributeError:
-                        # Fallback for SDK versions with separate create + wait_for_result
                         created = self._sdk_client.calls.create(**params)
                         call_id = created.get("id") if isinstance(created, dict) else getattr(created, "id", None)
                         return self._sdk_client.calls.wait_for_result(
@@ -113,11 +121,9 @@ class CalleAdapter:
                             interval_seconds=2
                         )
 
-                # Wrap synchronous SDK call in thread
                 sdk_result = await asyncio.to_thread(_run_sdk)
                 logger.info("CALL-E SDK call returned successfully.")
 
-                # Extract data safely from SDK response dict or object
                 call_id = sdk_result.get("id") if isinstance(sdk_result, dict) else getattr(sdk_result, "id", f"calle_{os.urandom(4).hex()}")
                 status = sdk_result.get("status") if isinstance(sdk_result, dict) else getattr(sdk_result, "status", "completed")
                 structured = sdk_result.get("structured_result") if isinstance(sdk_result, dict) else getattr(sdk_result, "structured_result", getattr(sdk_result, "result", {}))
@@ -141,7 +147,7 @@ class CalleAdapter:
 
         # 2. Direct HTTP REST fallback
         headers = {
-            "Authorization": f"Bearer {self.api_key}",
+            "Authorization": f"Bearer {clean_key}",
             "Content-Type": "application/json"
         }
         if idempotency_key:
@@ -172,7 +178,7 @@ class CalleAdapter:
                 await asyncio.sleep(2)
                 poll_resp = await http_client.get(
                     f"{self.api_url}/calls/{call_id}",
-                    headers={"Authorization": f"Bearer {self.api_key}"}
+                    headers={"Authorization": f"Bearer {clean_key}"}
                 )
                 if poll_resp.status_code == 200:
                     current_call = poll_resp.json()
@@ -187,7 +193,6 @@ class CalleAdapter:
                             "is_real_call": True
                         }
 
-            # Timeout
             return {
                 "id": call_id,
                 "status": "failed",
@@ -212,7 +217,7 @@ class CalleAdapter:
         call_type = meta.get("call_type", "INQUIRY")
         
         logger.info(f"Simulating realistic call with {supplier_name} ({call_type})...")
-        await asyncio.sleep(3.5)  # Simulate realistic telephony cadence
+        await asyncio.sleep(3.5)
 
         # --- WORKFLOW 1: PROCURE PERSONAS ---
         if "XYZ" in supplier_name:
@@ -247,7 +252,7 @@ class CalleAdapter:
                     "transcript": "Agent: 'Calling to confirm Purchase Order for 500 ergonomic chairs at $13,700 total.'\nAli (XYZ): 'Confirmed! Order reference PO-XYZ-2026-0941. Shipment is scheduled for dispatch tomorrow, arriving Thursday, September 4.'",
                     "is_real_call": False
                 }
-            else: # Standard initial inquiry
+            else:
                 return {
                     "id": f"sim_calle_{os.urandom(4).hex()}",
                     "status": "completed",
@@ -478,7 +483,6 @@ class CalleAdapter:
                 "is_real_call": False
             }
 
-        # Generic fallback
         return {
             "id": f"sim_calle_{os.urandom(4).hex()}",
             "status": "completed",

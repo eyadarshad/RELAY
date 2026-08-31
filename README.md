@@ -3,10 +3,13 @@
 > **"Give AI a high-level mission. It plans, searches, calls, negotiates, and locks in the deal."**  
 > Built for the **CALL-E Hackathon 2026** (Deadline: September 14, 2026).
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-eyad--relay--ops.vercel.app-00E5FF?style=for-the-badge&logo=vercel)](https://eyad-relay-ops.vercel.app/)
 [![CALL-E SDK](https://img.shields.io/badge/Telephony-CALL--E%20Official%20SDK%20v0.2-CCFF00?style=for-the-badge&logo=phone)](https://heycall-e.com)
 [![Next.js](https://img.shields.io/badge/Frontend-Next.js%2015%20App%20Router-white?style=for-the-badge&logo=nextdotjs)](https://nextjs.org)
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI%20%2B%20WebSockets-009688?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
 [![Design](https://img.shields.io/badge/Aesthetic-Brutalism%20%C3%97%20Surrealist%20Motion-00FF88?style=for-the-badge)](https://github.com)
+
+**Live Production URL**: [https://eyad-relay-ops.vercel.app/](https://eyad-relay-ops.vercel.app/)
 
 ---
 
@@ -192,7 +195,7 @@ cd frontend && npm run build
 
 ## Hackathon Judges Demonstration Script
 
-1. Open [http://localhost:3000](http://localhost:3000).
+1. Open [https://eyad-relay-ops.vercel.app/](https://eyad-relay-ops.vercel.app/) (or local [http://localhost:3000](http://localhost:3000)).
 2. Click the primary **01 // PROCURE** preset card (*"500 chairs under $15,000"*).
 3. Review the parsed constraints in the **Pre-Flight Briefing** modal and click **CONFIRM & LAUNCH RUN [>]**.
 4. Watch the 3-column **Mission Control Room** come alive:

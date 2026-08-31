@@ -1,4 +1,4 @@
-# RELAY // Autonomous Business Operations Agent
+# RELAY //
 
 > **"Give AI a high-level mission. It plans, searches, calls, negotiates, and locks in the deal."**  
 > Built for the **CALL-E Hackathon 2026** (Deadline: September 14, 2026).

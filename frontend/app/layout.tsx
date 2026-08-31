@@ -5,7 +5,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
-  title: "RELAY // Autonomous Operations Agent",
+  title: "RELAY //",
   description: "Give AI a mission. It handles the calls. Autonomous procurement, logistics rescue, bidding, and scheduling powered by CALL-E.",
 };
 

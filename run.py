@@ -6,7 +6,7 @@ import signal
 
 def main():
     print("=" * 60)
-    print("   RELAY // AUTONOMOUS BUSINESS OPERATIONS AGENT")
+    print("   RELAY //")
     print("   CALL-E Hackathon 2026 Engine")
     print("=" * 60)
     

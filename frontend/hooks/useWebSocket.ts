@@ -4,6 +4,7 @@ import { useMissionStore } from '@/store/missionStore';
 export function useWebSocket(missionId?: string) {
   const wsRef = useRef<WebSocket | null>(null);
   const {
+    setMission,
     updateStatus,
     addThought,
     setActiveCall,
@@ -54,6 +55,16 @@ export function useWebSocket(missionId?: string) {
           const { event_type, message, data, title, timestamp } = payload;
 
           switch (event_type) {
+            case 'STATE_SNAPSHOT':
+              if (data) {
+                setMission(data);
+                updateStatus(data.status);
+                if (data.summary_report) {
+                  setCompletionData(data.summary_report);
+                }
+              }
+              break;
+
             case 'AGENT_STATUS_CHANGED':
               updateStatus(data.status);
               if (message) addThought(`[STATUS] ${message}`);

@@ -59,7 +59,7 @@ class MissionOrchestrator:
             metadata_json=metadata or {}
         )
         session.add(ev)
-        await session.flush()
+        await session.commit()
 
         await event_bus.emit(MissionEvent(
             mission_id=mission_id,
@@ -71,7 +71,7 @@ class MissionOrchestrator:
 
     async def _set_status(self, session, mission: DBMission, new_status: MissionStatus, message: str = ""):
         mission.status = new_status.value
-        await session.flush()
+        await session.commit()
         await event_bus.emit(MissionEvent(
             mission_id=mission.id,
             event_type=EventType.AGENT_STATUS_CHANGED,
@@ -128,6 +128,9 @@ class MissionOrchestrator:
         logger.info(f"Starting autonomous mission orchestration for ID: {mission_id}")
         mission_start_time = datetime.utcnow()
 
+        # Grace period for frontend router transition and WebSocket connection
+        await asyncio.sleep(0.8)
+
         async with async_session_factory() as session:
             try:
                 result = await session.execute(select(DBMission).where(DBMission.id == mission_id))
@@ -152,7 +155,7 @@ class MissionOrchestrator:
                 mission.strategy = parsed["strategy"]
                 mission.approval_threshold = parsed["approval_threshold"]
 
-                await session.flush()
+                await session.commit()
                 await self._emit_reasoning(
                     mission.id,
                     f"Requirements extracted: Workflow [{mission.workflow_type}], Target: {mission.quantity} {mission.item}, "
@@ -237,7 +240,7 @@ class MissionOrchestrator:
                 started_at=datetime.utcnow()
             )
             session.add(call_rec)
-            await session.flush()
+            await session.commit()
 
             await event_bus.emit(MissionEvent(
                 mission_id=mission.id,
@@ -263,7 +266,7 @@ class MissionOrchestrator:
             call_rec.transcript_snippet = call_result.get("transcript", "")
             call_rec.structured_result = structured
             call_rec.ended_at = datetime.utcnow()
-            await session.flush()
+            await session.commit()
 
             await event_bus.emit(MissionEvent(
                 mission_id=mission.id,
@@ -295,7 +298,7 @@ class MissionOrchestrator:
                 notes=structured.get("notes", "")
             )
             session.add(offer)
-            await session.flush()
+            await session.commit()
             collected_offers.append(offer)
 
             await event_bus.emit(MissionEvent(
@@ -322,7 +325,7 @@ class MissionOrchestrator:
             required_quantity=mission.quantity,
             max_delivery_days=mission.constraints.get("max_delivery_days", 4)
         )
-        await session.flush()
+        await session.commit()
 
         await event_bus.emit(MissionEvent(
             mission_id=mission.id,
@@ -357,7 +360,7 @@ class MissionOrchestrator:
                 started_at=datetime.utcnow()
             )
             session.add(neg_call_rec)
-            await session.flush()
+            await session.commit()
 
             await event_bus.emit(MissionEvent(
                 mission_id=mission.id,
@@ -389,7 +392,7 @@ class MissionOrchestrator:
             neg_call_rec.ended_at = datetime.utcnow()
 
             mission.total_savings = savings
-            await session.flush()
+            await session.commit()
 
             await event_bus.emit(MissionEvent(
                 mission_id=mission.id,
@@ -471,7 +474,7 @@ class MissionOrchestrator:
             started_at=datetime.utcnow()
         )
         session.add(conf_call_rec)
-        await session.flush()
+        await session.commit()
 
         await event_bus.emit(MissionEvent(
             mission_id=mission.id,
@@ -495,7 +498,7 @@ class MissionOrchestrator:
         conf_call_rec.transcript_snippet = conf_result.get("transcript", "")
         conf_call_rec.structured_result = conf_result.get("result", {})
         conf_call_rec.ended_at = datetime.utcnow()
-        await session.flush()
+        await session.commit()
 
         await event_bus.emit(MissionEvent(
             mission_id=mission.id,
@@ -539,7 +542,7 @@ class MissionOrchestrator:
             "execution_time_seconds": elapsed_seconds
         }
         mission.summary_report = mission_report
-        await session.flush()
+        await session.commit()
 
         await self._set_status(session, mission, MissionStatus.COMPLETED, "Mission Accomplished! Structured transaction complete.")
         await self._emit_reasoning(mission.id, f"Mission Accomplished: {best_offer.quantity_available} units secured at ${best_offer.total_price:,.2f} (${mission.total_savings:,.2f} saved).")
@@ -591,7 +594,7 @@ class MissionOrchestrator:
                 started_at=datetime.utcnow()
             )
             session.add(call_rec)
-            await session.flush()
+            await session.commit()
 
             await event_bus.emit(MissionEvent(
                 mission_id=mission.id,
@@ -615,7 +618,7 @@ class MissionOrchestrator:
             call_rec.transcript_snippet = call_result.get("transcript", "")
             call_rec.structured_result = structured
             call_rec.ended_at = datetime.utcnow()
-            await session.flush()
+            await session.commit()
 
             await event_bus.emit(MissionEvent(
                 mission_id=mission.id,
@@ -648,7 +651,8 @@ class MissionOrchestrator:
                 notes=f"ETA: {eta_mins} min | Cost: ${cost:,.2f} | Contact: {driver}"
             )
             session.add(offer)
-            await session.flush()
+            await session.commit()
+            collected_offers.append(offer)
 
             await event_bus.emit(MissionEvent(
                 mission_id=mission.id,
@@ -711,7 +715,7 @@ class MissionOrchestrator:
             "execution_time_seconds": elapsed_seconds
         }
         mission.summary_report = mission_report
-        await session.flush()
+        await session.commit()
 
         await self._set_status(session, mission, MissionStatus.COMPLETED, "Rescue Mission Accomplished! Replacement truck dispatched.")
         await self._emit_reasoning(mission.id, f"Rescue Complete: Truck en route from {secured_offer.supplier_name}. Driver: {secured_offer.contact_person}.")
@@ -760,7 +764,7 @@ class MissionOrchestrator:
                 started_at=datetime.utcnow()
             )
             session.add(call_rec)
-            await session.flush()
+            await session.commit()
 
             await event_bus.emit(MissionEvent(
                 mission_id=mission.id,
@@ -784,7 +788,7 @@ class MissionOrchestrator:
             call_rec.transcript_snippet = call_result.get("transcript", "")
             call_rec.structured_result = structured
             call_rec.ended_at = datetime.utcnow()
-            await session.flush()
+            await session.commit()
 
             await event_bus.emit(MissionEvent(
                 mission_id=mission.id,
@@ -817,7 +821,7 @@ class MissionOrchestrator:
                 notes=f"Model: {model} | {warranty}-yr Warranty | {structured.get('notes', '')}"
             )
             session.add(offer)
-            await session.flush()
+            await session.commit()
             collected_offers.append(offer)
 
             await event_bus.emit(MissionEvent(
@@ -844,7 +848,7 @@ class MissionOrchestrator:
             required_quantity=1,
             max_delivery_days=7
         )
-        await session.flush()
+        await session.commit()
 
         best_offer = next((o for o in evaluated_offers if o.status == OfferStatus.BEST.value), evaluated_offers[0])
         best_offer.status = OfferStatus.ACCEPTED.value
@@ -873,7 +877,7 @@ class MissionOrchestrator:
             "execution_time_seconds": elapsed_seconds
         }
         mission.summary_report = mission_report
-        await session.flush()
+        await session.commit()
 
         await self._set_status(session, mission, MissionStatus.COMPLETED, "Quotation Matrix Complete! Recommended proposal identified.")
         await self._emit_reasoning(mission.id, f"Quotation matrix complete. Recommended bidder: {best_offer.supplier_name} at ${best_offer.total_price:,.2f} ({best_offer.warranty_years}-yr warranty).")
@@ -925,7 +929,7 @@ class MissionOrchestrator:
                 started_at=datetime.utcnow()
             )
             session.add(call_rec)
-            await session.flush()
+            await session.commit()
 
             await event_bus.emit(MissionEvent(
                 mission_id=mission.id,
@@ -948,7 +952,7 @@ class MissionOrchestrator:
             call_rec.transcript_snippet = call_result.get("transcript", "")
             call_rec.structured_result = structured
             call_rec.ended_at = datetime.utcnow()
-            await session.flush()
+            await session.commit()
 
             await event_bus.emit(MissionEvent(
                 mission_id=mission.id,
@@ -980,7 +984,8 @@ class MissionOrchestrator:
                 notes=f"Slot: {confirmed_time} | Status: {'ACCEPTED' if slot_accepted else 'DECLINED'} | {notes}"
             )
             session.add(offer)
-            await session.flush()
+            await session.commit()
+            collected_offers.append(offer)
 
             await event_bus.emit(MissionEvent(
                 mission_id=mission.id,
@@ -1042,7 +1047,7 @@ class MissionOrchestrator:
             "execution_time_seconds": elapsed_seconds
         }
         mission.summary_report = mission_report
-        await session.flush()
+        await session.commit()
 
         await self._set_status(session, mission, MissionStatus.COMPLETED, "Schedule Filled! Appointment confirmed.")
         await self._emit_reasoning(mission.id, f"Slot locked for {booked_offer.supplier_name} at {booked_offer.delivery_date}.")

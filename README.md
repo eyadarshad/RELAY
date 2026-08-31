@@ -10,7 +10,7 @@
 
 ---
 
-## ⚡ Executive Summary: What Makes RELAY Different
+## Executive Summary: What Makes RELAY Different
 
 **The phone is not the product. Autonomous real-world execution is the product.**
 
@@ -42,7 +42,7 @@ flowchart TD
 
 ---
 
-## 📸 Visual Tour & Live Screenshots
+## Visual Tour & Live Screenshots
 
 ### 1. Interactive Mission Launchpad
 > Natural language mission terminal with 4 preset business operations templates.
@@ -80,12 +80,12 @@ flowchart TD
 
 ---
 
-## 🥊 Why RELAY Wins Against Single-Call AI Wrappers
+## Why RELAY Wins Against Single-Call AI Wrappers
 
 | Feature | Generic "Voice Assistant" | RELAY Autonomous Ops Platform |
 |---|---|---|
 | **Interaction Model** | User talks to bot | Bot autonomously calls external businesses |
-| **Call Volume** | 1 call per command | **Multi-call lifecycle** (Inquiries → Negotiation → Confirmation) |
+| **Call Volume** | 1 call per command | **Multi-call lifecycle** (Inquiries -> Negotiation -> Confirmation) |
 | **Data Extraction** | Unstructured audio/text | **Strict Pydantic JSON Schemas** (`result_schema` enforced) |
 | **Negotiation** | None | **Adaptive 2nd-round call** using competing quote leverage |
 | **Safety & Control** | Blind execution or manual dial | **Human-in-the-loop authorization gate** for high-$ commitments |
@@ -94,7 +94,7 @@ flowchart TD
 
 ---
 
-## 🎨 UI/UX Design System: "Tactile Brutalism × Surrealist Motion"
+## UI/UX Design System: "Tactile Brutalism x Surrealist Motion"
 
 - **Palette**: VOID & SIGNAL (`#000000` true OLED black canvas, 1px structural borders, `#CCFF00` acid signal green, `#00FF88` verified green, `#00E5FF` active call cyan, `#FFB800` negotiation amber, `#FF3333` alert red).
 - **Typography**: Space Grotesk (display), JetBrains Mono (data & code), Inter (body).
@@ -103,7 +103,7 @@ flowchart TD
 
 ---
 
-## 🚀 The 4 Supported Workflows
+## Supported Workflows
 
 | # | Workflow | Scenario | Primary Autonomous Action |
 |---|---|---|---|
@@ -114,7 +114,7 @@ flowchart TD
 
 ---
 
-## 🛠️ Architecture & Tech Stack
+## Architecture & Tech Stack
 
 ```
 d:\CALL E\
@@ -144,7 +144,7 @@ d:\CALL E\
 
 ---
 
-## 🏁 Quickstart Guide
+## Quickstart Guide
 
 ### 1. Environment Configuration
 Create a `.env` file in the project root:
@@ -174,7 +174,7 @@ python run.py
 
 ---
 
-## 🧪 Verification & Testing
+## Verification & Testing
 
 Run backend test suite (9/9 passing):
 
@@ -190,20 +190,20 @@ cd frontend && npm run build
 
 ---
 
-## 🏆 Hackathon Judges Demonstration Script
+## Hackathon Judges Demonstration Script
 
 1. Open [http://localhost:3000](http://localhost:3000).
 2. Click the primary **01 // PROCURE** preset card (*"500 chairs under $15,000"*).
-3. Review the parsed constraints in the **Pre-Flight Briefing** modal and click **CONFIRM & LAUNCH RUN ▸**.
+3. Review the parsed constraints in the **Pre-Flight Briefing** modal and click **CONFIRM & LAUNCH RUN [>]**.
 4. Watch the 3-column **Mission Control Room** come alive:
-   - Status updates: `PLANNING` → `DISCOVERING` → `CALLING`.
+   - Status updates: `PLANNING` -> `DISCOVERING` -> `CALLING`.
    - Live call stage pulses and streams audio waveforms while CALL-E dials suppliers.
    - Structured quotes populate the **Proposal Matrix** in real-time.
    - Agent scores proposals and identifies XYZ ($14,700) and OfficePro ($14,100).
    - Status morphs to `NEGOTIATING` as RELAY places a targeted second call to XYZ using OfficePro's bid as leverage.
    - Price drops from **$14,700** to **$13,700** (**$1,000 verified savings** achieved!).
    - Mission pauses at the **Human-in-the-Loop Approval Gate** (since $13,700 > $5,000 threshold).
-   - Click **APPROVE & CONFIRM CALL ▸**.
+   - Click **APPROVE & CONFIRM CALL [>]**.
    - RELAY makes the final confirmation call, locking in Purchase Order `PO-XYZ-2026-0941`.
    - **Mission Accomplished** celebration debrief appears with verified metrics and exportable audit report.
 5. Click **NEW MISSION** to try **02 // RESCUE** (emergency logistics dispatch) or **04 // SCHEDULE** (waitlist slot filling)!

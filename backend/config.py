@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     # Database
     DATABASE_URL: str = (os.getenv("DATABASE_URL") or "sqlite+aiosqlite:///./relay.db").strip()
     
-    # Approval Thresholds (USD)
+    # Approval Thresholds (USD) - Halts workflow before final binding order if total exceeds threshold
     APPROVAL_LOW_THRESHOLD: float = 500.0
     APPROVAL_HIGH_THRESHOLD: float = 5000.0
     
@@ -40,9 +40,9 @@ class Settings(BaseSettings):
     MAX_CALLS_PER_MISSION: int = 15
     CALL_TIMEOUT_SECONDS: int = 120
     
-    # Simulation / Offline Testing Mode when CALL-E API key is not yet set or sandbox mode is toggled
-    # Note: If CALLE_API_KEY is provided and FORCE_SIMULATION is False, REAL phone calls are dispatched.
-    FORCE_SIMULATION: bool = os.getenv("FORCE_SIMULATION", "false").lower().strip() == "true"
+    # Safe Sandbox Default: Runs in zero-side-effect synthetic fixture preview mode by default.
+    # Live outbound telephony execution requires explicit opt-in: FORCE_SIMULATION=false with a valid CALLE_API_KEY.
+    FORCE_SIMULATION: bool = os.getenv("FORCE_SIMULATION", "true").lower().strip() == "true"
     
     class Config:
         env_file = ".env"

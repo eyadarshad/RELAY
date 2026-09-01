@@ -222,7 +222,7 @@ class CalleAdapter:
         await asyncio.sleep(3.5)
 
         # --- WORKFLOW 1: PROCURE PERSONAS ---
-        if "XYZ" in supplier_name:
+        if "Alpha" in supplier_name or "XYZ" in supplier_name:
             if call_type == "NEGOTIATION":
                 return {
                     "id": f"sim_calle_{os.urandom(4).hex()}",
@@ -236,7 +236,7 @@ class CalleAdapter:
                         "conditions_for_discount": "Full 500 unit commitment confirmed today"
                     },
                     "duration_seconds": 64,
-                    "transcript": "Agent: 'We have another comparable offer from OfficePro at $14,100. Is there any flexibility if we confirm all 500 units today?'\nAli (XYZ): 'If you can confirm today, I can authorize our maximum commercial volume discount at $27.40/chair, bringing total to $13,700 with full 2-year warranty.'\nAgent: 'Understood, that is very competitive. We will submit for purchase approval.'",
+                    "transcript": "Agent: 'We have another comparable offer from Vendor Gamma at $14,100. Is there any flexibility if we confirm all 500 units today?'\nSales Lead (Vendor Alpha): 'If you can confirm today, I can authorize our maximum commercial volume discount at $27.40/chair, bringing total to $13,700 with full 2-year warranty.'\nAgent: 'Understood, that is very competitive. We will submit for purchase approval.'",
                     "is_real_call": False
                 }
             elif call_type == "CONFIRMATION":
@@ -245,13 +245,13 @@ class CalleAdapter:
                     "status": "completed",
                     "result": {
                         "order_confirmed": True,
-                        "order_reference_number": "PO-XYZ-2026-0941",
+                        "order_reference_number": "PO-ALPHA-2026-0941",
                         "final_agreed_amount": 13700.0,
                         "delivery_commitment_date": "Thursday, September 4",
-                        "support_contact": "+1 (415) 555-0191"
+                        "support_contact": "+1-555-0101"
                     },
                     "duration_seconds": 45,
-                    "transcript": "Agent: 'Calling to confirm Purchase Order for 500 ergonomic chairs at $13,700 total.'\nAli (XYZ): 'Confirmed! Order reference PO-XYZ-2026-0941. Shipment is scheduled for dispatch tomorrow, arriving Thursday, September 4.'",
+                    "transcript": "Agent: 'Calling to confirm Purchase Order for 500 ergonomic chairs at $13,700 total.'\nSales Lead (Vendor Alpha): 'Confirmed! Order reference PO-ALPHA-2026-0941. Shipment is scheduled for dispatch tomorrow, arriving Thursday, September 4.'",
                     "is_real_call": False
                 }
             else:
@@ -266,16 +266,16 @@ class CalleAdapter:
                         "delivery_days": 4,
                         "warranty_years": 2.0,
                         "payment_terms": "50% upfront, 50% upon delivery",
-                        "contact_person": "Ali (Commercial Sales Lead)",
+                        "contact_person": "Sales Lead (Desk 1)",
                         "negotiable": True,
                         "notes": "Has 750 units in stock. High grade mesh ergonomic model. Representative stated price is flexible for instant corporate close."
                     },
                     "duration_seconds": 58,
-                    "transcript": "Agent: 'Hi Ali, we need 500 ergonomic office chairs delivered to Lahore by Friday. What is your pricing and stock?'\nAli: 'We have 750 units in our central warehouse. Standard commercial rate is $29.40/unit ($14,700 total), with 4-day delivery and 2-year warranty.'",
+                    "transcript": "Agent: 'We need 500 ergonomic office chairs delivered by Friday. What is your pricing and stock?'\nSales Lead (Vendor Alpha): 'We have 750 units in our central warehouse. Standard commercial rate is $29.40/unit ($14,700 total), with 4-day delivery and 2-year warranty.'",
                     "is_real_call": False
                 }
         
-        elif "ABC" in supplier_name:
+        elif "Beta" in supplier_name or "ABC" in supplier_name:
             return {
                 "id": f"sim_calle_{os.urandom(4).hex()}",
                 "status": "completed",
@@ -287,16 +287,16 @@ class CalleAdapter:
                     "delivery_days": 3,
                     "warranty_years": 1.0,
                     "payment_terms": "Net 15",
-                    "contact_person": "Bilal",
+                    "contact_person": "Sales Desk (Vendor Beta)",
                     "negotiable": False,
                     "notes": "Exceeds $15,000 maximum budget. Representative stated firm pricing with no volume discount."
                 },
                 "duration_seconds": 42,
-                "transcript": "Agent: 'Inquiring about 500 chairs delivered this week.'\nBilal (ABC): 'We can do $30.40 per chair, total $15,200. Pricing is fixed for this quarter. Delivery in 3 days.'",
+                "transcript": "Agent: 'Inquiring about 500 chairs delivered this week.'\nSales Desk (Vendor Beta): 'We can do $30.40 per chair, total $15,200. Pricing is fixed for this quarter. Delivery in 3 days.'",
                 "is_real_call": False
             }
 
-        elif "OfficePro" in supplier_name:
+        elif "Gamma" in supplier_name or "OfficePro" in supplier_name:
             return {
                 "id": f"sim_calle_{os.urandom(4).hex()}",
                 "status": "completed",
@@ -308,16 +308,16 @@ class CalleAdapter:
                     "delivery_days": 5,
                     "warranty_years": 2.0,
                     "payment_terms": "100% on delivery",
-                    "contact_person": "Hamza",
+                    "contact_person": "Fulfillment Desk (Vendor Gamma)",
                     "negotiable": False,
                     "notes": "Good price at $14,100, but delivery timeline is 5-6 days which cuts very close to Friday deadline."
                 },
                 "duration_seconds": 51,
-                "transcript": "Hamza (OfficePro): 'We have 600 units available at $28.20 each ($14,100 total). Delivery takes 5 full business days.'",
+                "transcript": "Fulfillment Desk (Vendor Gamma): 'We have 600 units available at $28.20 each ($14,100 total). Delivery takes 5 full business days.'",
                 "is_real_call": False
             }
 
-        elif "MegaOffice" in supplier_name:
+        elif "Delta" in supplier_name or "Mega" in supplier_name:
             return {
                 "id": f"sim_calle_{os.urandom(4).hex()}",
                 "status": "completed",
@@ -326,20 +326,20 @@ class CalleAdapter:
                     "quantity_available": 250,
                     "unit_price": 25.00,
                     "total_price": 12500.0,
-                    "delivery_days": 2,
+                    "delivery_days": 1.0,
                     "warranty_years": 1.0,
                     "payment_terms": "Advance payment",
-                    "contact_person": "Tariq",
+                    "contact_person": "Inventory Manager",
                     "negotiable": False,
                     "notes": "Insufficient stock. Only 250 units in warehouse; remaining 250 on 3-week backorder."
                 },
                 "duration_seconds": 38,
-                "transcript": "Tariq (MegaOffice): 'We only have 250 units in stock right now. The rest won't arrive for 3 weeks.'",
+                "transcript": "Inventory Manager (Vendor Delta): 'We only have 250 units in stock right now. The rest won't arrive for 3 weeks.'",
                 "is_real_call": False
             }
 
         # --- WORKFLOW 2: RESCUE PERSONAS ---
-        elif "Swift" in supplier_name or "Express" in supplier_name:
+        elif "Rapid" in supplier_name or "Swift" in supplier_name or "Express" in supplier_name:
             return {
                 "id": f"sim_calle_{os.urandom(4).hex()}",
                 "status": "completed",
@@ -347,15 +347,15 @@ class CalleAdapter:
                     "service_available": True,
                     "eta_minutes": 45,
                     "total_cost": 480.0,
-                    "driver_contact": "Captain Naveed (+1-415-555-0201)",
+                    "driver_contact": "Dispatch Unit 101 (+1-555-0111)",
                     "notes": "26ft box truck standing by in central district. Immediate dispatch."
                 },
                 "duration_seconds": 35,
-                "transcript": "Agent: 'We need an emergency 26ft box truck dispatched immediately to our depot. Are you available within 2 hours?'\nDispatcher (Swift): 'Yes! We have a 26ft truck on stand-by near the downtown interchange. Captain Naveed can arrive at your dock in 45 minutes for a $480 flat dispatch rate.'\nAgent: 'Excellent, locking in the dispatch.'",
+                "transcript": "Agent: 'We need an emergency 26ft box truck dispatched immediately to our depot. Are you available within 2 hours?'\nDispatcher (Rapid Fleet): 'Yes! We have a 26ft truck on stand-by near the downtown interchange. Unit 101 can arrive at your dock in 45 minutes for a $480 flat dispatch rate.'\nAgent: 'Excellent, locking in the dispatch.'",
                 "is_real_call": False
             }
 
-        elif "Titan" in supplier_name or "Haulers" in supplier_name:
+        elif "Heavy" in supplier_name or "Titan" in supplier_name or "Haulers" in supplier_name:
             return {
                 "id": f"sim_calle_{os.urandom(4).hex()}",
                 "status": "completed",
@@ -363,15 +363,15 @@ class CalleAdapter:
                     "service_available": True,
                     "eta_minutes": 90,
                     "total_cost": 620.0,
-                    "driver_contact": "Dispatch Hotline (+1-415-555-0202)",
+                    "driver_contact": "Dispatch Desk (+1-555-0112)",
                     "notes": "Available in 90 minutes. Freight rate $620."
                 },
                 "duration_seconds": 32,
-                "transcript": "Dispatcher (Titan): 'We have a unit returning from a run. Could reach you in approximately 90 minutes for $620.'",
+                "transcript": "Dispatcher (Heavy Haul): 'We have a unit returning from a run. Could reach you in approximately 90 minutes for $620.'",
                 "is_real_call": False
             }
 
-        elif "Apex Express" in supplier_name or "Cargo" in supplier_name:
+        elif "Airport" in supplier_name or "Cargo" in supplier_name:
             return {
                 "id": f"sim_calle_{os.urandom(4).hex()}",
                 "status": "completed",
@@ -383,18 +383,18 @@ class CalleAdapter:
                     "notes": "All fleet vehicles currently dispatched on scheduled routes."
                 },
                 "duration_seconds": 25,
-                "transcript": "Dispatcher (Apex Cargo): 'Sorry, all our box trucks are currently committed on airport runs until 7 PM tonight.'",
+                "transcript": "Dispatcher (Cargo Transit): 'Sorry, all our box trucks are currently committed on airport runs until 7 PM tonight.'",
                 "is_real_call": False
             }
 
         # --- WORKFLOW 3: QUOTE PERSONAS ---
-        elif "Voltech" in supplier_name or "Voltech Power" in supplier_name:
+        elif "PowerTech" in supplier_name or "Voltech" in supplier_name:
             return {
                 "id": f"sim_calle_{os.urandom(4).hex()}",
                 "status": "completed",
                 "result": {
                     "availability": True,
-                    "equipment_model": "Cummins 50kVA Diesel Generator (Soundproof Silent Canopy)",
+                    "equipment_model": "50kVA Diesel Generator (Soundproof Silent Canopy)",
                     "total_price": 14200.0,
                     "unit_price": 14200.0,
                     "quantity_available": 5,
@@ -402,21 +402,21 @@ class CalleAdapter:
                     "warranty_years": 3.0,
                     "includes_installation": True,
                     "payment_terms": "30% advance, 70% post-commissioning",
-                    "contact_person": "Engr. Salman (Sales Engineering)",
+                    "contact_person": "Sales Engineering Desk",
                     "notes": "Includes automatic transfer switch (ATS), load testing, and full 3-year commercial warranty."
                 },
                 "duration_seconds": 58,
-                "transcript": "Agent: 'Inquiring about commercial 50kVA generator pricing including warranty and installation.'\nEngr. Salman (Voltech): 'We can provide the Cummins 50kVA soundproof generator for $14,200 total, including on-site ATS installation and full 3-year parts & labor warranty. Delivery in 4 business days.'",
+                "transcript": "Agent: 'Inquiring about commercial 50kVA generator pricing including warranty and installation.'\nSales Engineering (PowerTech): 'We can provide the 50kVA soundproof generator for $14,200 total, including on-site ATS installation and full 3-year parts & labor warranty. Delivery in 4 business days.'",
                 "is_real_call": False
             }
 
-        elif "Dynamo" in supplier_name or "Dynamo Industrial" in supplier_name:
+        elif "Grid" in supplier_name or "Dynamo" in supplier_name:
             return {
                 "id": f"sim_calle_{os.urandom(4).hex()}",
                 "status": "completed",
                 "result": {
                     "availability": True,
-                    "equipment_model": "Perkins 60kVA Industrial Power Unit",
+                    "equipment_model": "60kVA Industrial Power Unit",
                     "total_price": 15800.0,
                     "unit_price": 15800.0,
                     "quantity_available": 8,
@@ -424,21 +424,21 @@ class CalleAdapter:
                     "warranty_years": 2.0,
                     "includes_installation": True,
                     "payment_terms": "50% deposit, 50% net 30",
-                    "contact_person": "Rashid Khan",
-                    "notes": "Perkins 60kVA generator. 2-year warranty with 3-day rapid delivery."
+                    "contact_person": "Commercial Desk",
+                    "notes": "60kVA generator. 2-year warranty with 3-day rapid delivery."
                 },
                 "duration_seconds": 48,
-                "transcript": "Rashid (Dynamo): 'Our Perkins 60kVA unit is $15,800 turnkey. Includes 2 years warranty and 3-day commissioning.'",
+                "transcript": "Commercial Desk (Industrial Grid): 'Our 60kVA unit is $15,800 turnkey. Includes 2 years warranty and 3-day commissioning.'",
                 "is_real_call": False
             }
 
-        elif "Atlas" in supplier_name or "Atlas Energy" in supplier_name:
+        elif "Prime" in supplier_name or "Atlas" in supplier_name:
             return {
                 "id": f"sim_calle_{os.urandom(4).hex()}",
                 "status": "completed",
                 "result": {
                     "availability": True,
-                    "equipment_model": "Caterpillar CAT 50kVA Heavy Duty",
+                    "equipment_model": "50kVA Heavy Duty Commercial Unit",
                     "total_price": 18500.0,
                     "unit_price": 18500.0,
                     "quantity_available": 12,
@@ -446,42 +446,42 @@ class CalleAdapter:
                     "warranty_years": 5.0,
                     "includes_installation": True,
                     "payment_terms": "100% Letter of Credit / Corporate PO",
-                    "contact_person": "Zubair Shah",
-                    "notes": "CAT tier 1 generator with 5-year warranty. Premium commercial grade."
+                    "contact_person": "Accounts Manager",
+                    "notes": "Tier 1 generator with 5-year warranty. Premium commercial grade."
                 },
                 "duration_seconds": 52,
-                "transcript": "Zubair (Atlas Energy): 'We quote the Caterpillar 50kVA at $18,500 with 5-year extended warranty.'",
+                "transcript": "Accounts Manager (Prime Energy): 'We quote the 50kVA unit at $18,500 with 5-year extended warranty.'",
                 "is_real_call": False
             }
 
         # --- WORKFLOW 4: SCHEDULE PERSONAS ---
-        elif "Sarah" in supplier_name or "Dr. Sarah" in supplier_name:
+        elif "101" in supplier_name or "Sarah" in supplier_name:
             return {
                 "id": f"sim_calle_{os.urandom(4).hex()}",
                 "status": "completed",
                 "result": {
                     "slot_accepted": True,
-                    "patient_or_client_name": "Dr. Sarah Khan",
+                    "patient_or_client_name": "Waitlist Candidate 101",
                     "confirmed_time": "Today at 3:00 PM",
-                    "special_requests": "Requesting brief intake file review 10 minutes prior"
+                    "special_requests": "Review intake file prior to consultation"
                 },
                 "duration_seconds": 31,
-                "transcript": "Agent: 'Hello Dr. Sarah, a 3:00 PM consultation slot has just opened up today due to a cancellation. As top priority on our waitlist, would you like to take this appointment?'\nDr. Sarah: 'Yes, absolutely! I have been waiting for a 3 PM opening all week. Please confirm my booking immediately.'\nAgent: 'Confirmed. You are booked for today at 3:00 PM.'",
+                "transcript": "Agent: 'Hello, a 3:00 PM consultation slot has opened up today due to a cancellation. As top priority on our waitlist, would you like to take this appointment?'\nClient (Candidate 101): 'Yes! That works for me. Please confirm my booking.'\nAgent: 'Confirmed. You are booked for today at 3:00 PM.'",
                 "is_real_call": False
             }
 
-        elif "Tariq" in supplier_name:
+        elif "102" in supplier_name or "Tariq" in supplier_name:
             return {
                 "id": f"sim_calle_{os.urandom(4).hex()}",
                 "status": "completed",
                 "result": {
                     "slot_accepted": False,
-                    "patient_or_client_name": "Tariq Mansoor",
+                    "patient_or_client_name": "Waitlist Candidate 102",
                     "confirmed_time": "None",
-                    "special_requests": "Keep on waitlist for tomorrow morning"
+                    "special_requests": "Keep on waitlist for tomorrow"
                 },
                 "duration_seconds": 26,
-                "transcript": "Tariq: 'Thank you for calling, but I have a conflicting board meeting at 3 PM today. Please keep me on the waitlist for tomorrow.'",
+                "transcript": "Client (Candidate 102): 'Thank you for checking, but I have a scheduling conflict this afternoon. Please offer it to the next candidate.'",
                 "is_real_call": False
             }
 

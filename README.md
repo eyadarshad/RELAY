@@ -150,20 +150,23 @@ d:\CALL E\
 ## Quickstart Guide
 
 ### 1. Environment Configuration
-Create a `.env` file in the project root:
+Create a `.env` file in the project root (or copy `.env.example`):
 
 ```bash
-# CALL-E API Key (Get from https://dashboard.heycall-e.com)
-CALLE_API_KEY="iams_live_your_calle_api_key_here"
+# CALL-E API Key (Optional for sandbox demo, required for live calling)
+CALLE_API_KEY=""
 
-# Set to false for live calls, true for offline sandbox simulation
-FORCE_SIMULATION=false
+# Safe Sandbox Default: true = offline dry-run preview; false = live outbound calls
+FORCE_SIMULATION=true
 
-# Approval Threshold Settings
+# Approval Threshold Settings (USD) - Halts workflow before binding order if amount > threshold
 APPROVAL_HIGH_THRESHOLD=5000.0
 ```
 
-> **Note**: If `CALLE_API_KEY` is omitted or `FORCE_SIMULATION=true`, RELAY runs in high-fidelity sandbox mode with realistic conversational delays, structured extraction, and verified discounts.
+> **Safe Default & Bounded Behavior**:
+> - By default, RELAY runs in **safe sandbox simulation mode** (`FORCE_SIMULATION=true`) using synthetic mock fixtures with zero external side effects.
+> - Live outbound telephony is strictly **opt-in** and requires explicitly setting `FORCE_SIMULATION=false` with a valid `CALLE_API_KEY`.
+> - The **Human Approval Gate** halts the execution flow prior to any final binding commitment if the transaction total exceeds the configured threshold.
 
 ### 2. Launch Entire Platform (One Command)
 Run from project root:
